@@ -1,6 +1,14 @@
 language: erlang
 otp_release:
-   - R15B02
-   - R16B
-before_script: "make build"
-script: "make test"
+- 19.1
+- 18.3
+- 17.5
+- R16B03
+- R15B03
+before_script:
+- make build
+script:
+- make test
+notifications:
+  slack:
+    secure: HRUOPM6zlxAqKywHeIeqis29rQcAf25KwqTKSx3pe3Z40VH7lrucJeQrXgU1B7rqei69Jl+iZA82J8tAu8f2/OvH3m8dsbrQ6dEUBJD787bgnPPzQjtINITwjRKMlIoF0/sMNColA0I3F02d1QiOc/qk2UNNKARvOmXbE+BUGQA000/gmdep7n2vm5Z5FNr8YSeSWhQByS0NJlhujqmFj/Cbh9gjIOKZuq9V6wcZxMaBC/0DrepkdWrv0KD16Jrhy0x/8vbeV7/lJsJeMg/6JpFERjMiEK9ojRJcF3VmEFjH70LaPyySS9X9AQbfdFk90LBzOSpeYSyNQ9yinxDKc0EpYG1z10KxGedWwkY3iHQyQDH9NBgICrWeEurBi+F4TYamYQ9NyyLr29Bap6Sm6fbyp5/u0Cg+lY/H7jD0vflTajEtgRki9hniHeSlpNHhMg8cJJ5bkTTlXSzthNSIZvT+evCfwZ0lPI4VQH9TiUmEOoIQWczbsV37mRGwBhrt5yrCptwImGLOv3GJuqcxShyKv9z2QkqpM68DCltnM9NHJFnDF4BIjUONSZftKSh/4ZZOGgvqB0JDxwcqM2PvEXWdNnV+rvjuVZYCnCufe7F91+WBjG9jBsQuomJqelLYS3HTpKnHbJzbx4M6zGn/IsUFYnTOPyiL1AEXyWHrY6Y=
