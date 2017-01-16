@@ -34,8 +34,6 @@
 
 -include("hamcrest_internal.hrl").
 
--import(hamcrest, [message/4]).
-
 -export([
     all_of/1,
     anything/0,
@@ -118,6 +116,7 @@ foreach(M) when is_record(M, 'hamcrest.matchspec') ->
     ?MATCHER(fun(L) -> drop_matches(M, L) == [] end, M,
              {foreach, M#'hamcrest.matchspec'.desc}).
 
+-spec drop_matches(hamcrest:matchspec(), list()) -> boolean() | list().
 drop_matches(Match, []) ->
     case hamcrest:match([], Match) of
         true -> [];
@@ -126,8 +125,8 @@ drop_matches(Match, []) ->
 drop_matches(Match, L) ->
     lists:dropwhile(fun(E) -> hamcrest:match(E, Match) end, L).
 
--spec(any_of(list(matchfun(term())))     -> hamcrest:matchspec();
-                  (list(hamcrest:matchspec())) -> hamcrest:matchspec()).
+-spec any_of([matchfun(term())] | [hamcrest:matchspec()])
+            -> hamcrest:matchspec().
 any_of(Matchers) when is_list(Matchers) ->
     MatchFun =
     fun(M) when is_function(M) -> M;
@@ -142,8 +141,8 @@ any_of(Matchers) when is_list(Matchers) ->
 
 %% TODO: older syntax for type specifications - we need to support
 %% >= R13B for the most part...
--spec all_of(list(matchfun(term())))     -> hamcrest:matchspec();
-            (list(hamcrest:matchspec())) -> hamcrest:matchspec().
+-spec all_of([matchfun(term())] | [hamcrest:matchspec()])
+            -> hamcrest:matchspec().
 all_of(Matchers) when is_list(Matchers) ->
     MatchFun = fun(M) when is_function(M) -> M;
        (#'hamcrest.matchspec'{matcher=F}) -> F
@@ -171,9 +170,8 @@ exactly_equal_to(X) ->
         expected    = X
     }.
 
--spec(is(matchfun(term()))      -> hamcrest:matchspec();
-         (hamcrest:matchspec()) -> hamcrest:matchspec();
-         (any())                -> hamcrest:matchspec()).
+-spec is(matchfun(term()) | hamcrest:matchspec() | any())
+            -> hamcrest:matchspec().
 is(Matcher) when is_record(Matcher, 'hamcrest.matchspec') ->
     Matcher;
 is(Term) ->
@@ -187,9 +185,8 @@ is_true() ->
 is_false() ->
     is_not(equal_to(true)).
 
--spec(is_not(matchfun(term()))     -> hamcrest:matchspec();
-            (hamcrest:matchspec()) -> hamcrest:matchspec();
-            (term())               -> hamcrest:matchspec()).
+-spec is_not(matchfun(term()) | hamcrest:matchspec() | term())
+            -> hamcrest:matchspec().
 is_not(#'hamcrest.matchspec'{ matcher=MatchFun }=MatchSpec)
     when is_record(MatchSpec, 'hamcrest.matchspec') ->
   MatchSpec#'hamcrest.matchspec'{ matcher = (fun(X) -> not(MatchFun(X)) end) };

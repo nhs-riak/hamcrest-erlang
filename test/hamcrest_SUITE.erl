@@ -30,12 +30,25 @@
 %% module annotations
 -module(hamcrest_SUITE).
 
--include_lib("common_test/include/ct.hrl").
--include("test.hrl").
--include("qc.hrl").
--include("../include/hamcrest.hrl").
-
 -compile(export_all).
+
+-ifdef(EQC).
+-ifdef(HAMCREST_TEST_OLD_OTP).
+-define(SKIP_TEST_REASON, otp_release_too_old).
+-endif. % HAMCREST_TEST_OLD_OTP
+-else.  % not EQC
+-define(SKIP_TEST_REASON, no_eqc).
+-endif. % EQC
+
+-ifdef(SKIP_TEST_REASON).
+
+all() -> {skip, ?SKIP_TEST_REASON}.
+
+-else.
+-include_lib("eqc/include/eqc.hrl").
+-include_lib("common_test/include/ct.hrl").
+-include("../include/hamcrest.hrl").
+-include("test.hrl").
 
 all() -> ?CT_REGISTER_TESTS(?MODULE).
 
@@ -107,8 +120,7 @@ is_matcher(_) ->
           end),
   ?EQC(P).
 
--ifdef('eqc').
-something() -> eqc_gen:oneof([int(), nat(), list(char), binary()]).
--else.
-something() -> any().
--endif.
+something() ->
+    eqc_gen:oneof([int(), nat(), list(char), binary()]).
+
+-endif. % EQC

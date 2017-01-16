@@ -29,12 +29,20 @@
 %% module annotations
 -module(hamcrest_matchers_SUITE).
 
--include_lib("common_test/include/ct.hrl").
--include("qc.hrl").
--include("../include/hamcrest.hrl").
-
 -compile(export_all).
 
+-ifndef(EQC).
+-define(SKIP_TEST_REASON, no_eqc).
+-endif. % EQC
+
+-ifdef(SKIP_TEST_REASON).
+
+all() -> {skip, ?SKIP_TEST_REASON}.
+
+-else.
+-include_lib("eqc/include/eqc.hrl").
+-include_lib("common_test/include/ct.hrl").
+-include("../include/hamcrest.hrl").
 -include("test.hrl").
 
 all() ->
@@ -346,3 +354,5 @@ is_empty_pukes_for_other_inputs(_) ->
         fun() -> ?assertThat(10, isempty()) end,
         will_fail()
     ).
+
+-endif. % EQC
