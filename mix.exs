@@ -24,7 +24,7 @@ defmodule Hamcrest.Mixfile do
       _ ->
         []
     end
-    [:debug_info, :warnings_as_errors, :fail_on_warning | extra_options]
+    [:debug_info, :warnings_as_errors | extra_options]
   end
 
   defp deps do
