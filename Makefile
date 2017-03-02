@@ -27,8 +27,9 @@ ifeq ($(MIX_VERSION),)
 	$(error The mix command is required to publish to hex.pm)
 endif
 	echo "==> Tagging version $(VERSION)"
-	echo -n "$(VERSION)" > VERSION
-	git add --force VERSION
+	echo -n "$(VERSION)" > $(PROJDIR)/VERSION
+	sed -i.orig -e '/\<vsn\>/s/.*/  {vsn, "$(VERSION)"},/' $(PROJDIR)/ebin/hamcrest.app
+	git add --force VERSION $(PROJDIR)/ebin/hamcrest.app
 	git commit --message="basho-hamcrest $(VERSION)"
 	git push
 	git tag --sign -a "$(VERSION)" -m "basho-hamcrest $(VERSION)" --local-user "$(RELEASE_GPG_KEYNAME)"

@@ -1,7 +1,7 @@
 {application,
  hamcrest,
  [{description,"Hamcrest Matcher Library"},
-  {vsn,git},
+  {vsn, "0.4.0"},
   {modules,[hamcrest,hamcrest_matchers,hamcrest_term]},
   {registered,[]},
   {applications,[kernel,stdlib]},
